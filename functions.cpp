@@ -4,9 +4,7 @@
 
 #include "functions.h"
 #include <iostream>
-
 #include <fstream>
-
 #include <algorithm>
 
 #include <cstring>
@@ -90,9 +88,7 @@ void menu() {
   do {
 
     cout << "\n\n--------------------------------" << endl;
-
     cout << "\tMenu";
-
     cout << "\n--------------------------------" << endl;
 
     cout << "A. Read responses from a file" << endl;
