@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/functions.cpp
+functions.h
+/Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/functions.h
+iostream
+-
+fstream
+-
+algorithm
+-
+cstring
+-
+string
+-
+ctime
+-
+set
+-
+
+/Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/functions.h
+string
+-
+fstream
+-
+iomanip
+-
+iostream
+-
+random
+-
+
