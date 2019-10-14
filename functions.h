@@ -23,7 +23,7 @@ using namespace std;
 
 
 //Requirement A
-int readResponses();
+void readResponses();
 
 //B
 void playMagic8();
