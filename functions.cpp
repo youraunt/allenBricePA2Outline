@@ -17,6 +17,8 @@
 #define MAXSIZE 100
 //*********************************************************************************************************
 // inherit from bernoulli_distribution to generate more randomness in number than rand
+//*********************************************************************************************************
+
 struct Response : public bernoulli_distribution {
   string phrase;
   string type;
@@ -24,12 +26,16 @@ struct Response : public bernoulli_distribution {
 
 //*********************************************************************************************************
 // helper function to sort alphabetically by phrase
+//*********************************************************************************************************
+
 bool aCompare(const struct Response &lhs, struct Response &rhs) {
   return lhs.phrase < rhs.phrase;
 }
 
 //*********************************************************************************************************
 // Requirement A
+//*********************************************************************************************************
+
 void readResponses() {
   // initiate file stream
   ifstream infile;
@@ -53,6 +59,8 @@ void readResponses() {
 //*********************************************************************************************************
 // Requirement B
 // function playMagic8 to ask the ball questions and get responses
+//*********************************************************************************************************
+
 int playMagic8() {
   // declare local variable
   string question;
@@ -79,6 +87,8 @@ int playMagic8() {
 }
 //*********************************************************************************************************
 // Requirement C
+//*********************************************************************************************************
+
 void printResponsesAndCategories() {
   sort(Response, Response + 20, aCompare);
   cout << "\nPhrase, Type:" << endl;
@@ -89,6 +99,8 @@ void printResponsesAndCategories() {
 }
 //*********************************************************************************************************
 // Requirement D
+//*********************************************************************************************************
+
 void writeResponsesToFile() {
   // initialize ofstream
   ofstream outfile;
@@ -105,6 +117,8 @@ void writeResponsesToFile() {
 }
 //*********************************************************************************************************
 // Extra credit
+//*********************************************************************************************************
+
 void deleteResponse() {
   int element;
   cout << "Which element would you like to delete?"
