@@ -1,43 +1,43 @@
-As I see it, yes
-positive
-Ask again later
-vague
-Better not tell you now
-vague
-Cannot predict now
-vague
-Concentrate and ask again
-vague
-Don't count on it
-negative
-It is certain
-positive
-It is decidedly so
-positive
-Most likely
-positive
-My reply is no
-negative
-My sources say no
-negative
-Outlook good
-positive
-Outlook not so good
-negative
-Reply hazy try again
-vague
-Signs point to yes
-positive
-Very doubtful
-negative
-Without a doubt
-positive
-Yes
-positive
-Yes definitely
-positive
-You may rely on it
-positive
+As I see it, yes!
+Positive!
+Ask again later.
+Vague!
+Better not tell you now.
+Vague!
+Cannot predict now.
+Vague!
+Concentrate and ask again.
+Vague!
+Don't count on it!
+Negative!
+It is certain!
+Positive!
+It is decidedly so!
+Positive!
+Most likely.
+Positive!
+My reply is no!
+Negative!
+My sources say no.
+Negative!
+Outlook good!
+Positive!
+Outlook not so good!
+Negative!
+Reply hazy, try again.
+Vague!
+Signs point to yes!!!
+Positive!
+Very doubtful!
+Negative!
+Without a doubt!
+Positive!
+Yes!!!
+Positive!
+Yes, definitely!
+Positive!
+You may rely on it.
+Positive!
 
 
 

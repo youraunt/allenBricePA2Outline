@@ -19,16 +19,16 @@
 // inherit from bernoulli_distribution to generate more randomness in number than rand
 //*********************************************************************************************************
 
-struct Response : public bernoulli_distribution {
+struct response : public bernoulli_distribution {
   string phrase;
   string type;
-} Response[MAXSIZE];
+} response[MAXSIZE];
 
 //*********************************************************************************************************
 // helper function to sort alphabetically by phrase
 //*********************************************************************************************************
 
-bool aCompare(const struct Response &lhs, struct Response &rhs) {
+bool compare(const struct response &lhs, struct response &rhs) {
   return lhs.phrase < rhs.phrase;
 }
 
@@ -48,7 +48,7 @@ void readResponses() {
     exit(EXIT_FAILURE);
   }
   // range based loop to iterate through struct
-  for (auto &response : Response) {
+  for (auto &response : response) {
     // grab lines from file
     getline(infile, response.phrase);
     getline(infile, response.type);
@@ -68,7 +68,7 @@ int playMagic8() {
   cout << "\n\nEnter your question: " << endl;
   // ignore blank input
   cin.ignore();
-  // get user input store string variable questiton
+  // get user input store string variable question
   getline(cin, question);
   // create object for seeding
   random_device randomDevice;
@@ -79,10 +79,10 @@ int playMagic8() {
   // assign random number to int type variable named randomNumber
   int randomNumber = dist20(engine);
   // display users question with punctuation
-  cout << question << "?" << endl;
+  cout <<"\n" << question << "?" << endl;
   // display random phrase and type
-  cout << Response[randomNumber].phrase << endl;
-  cout << Response[randomNumber].type << endl;
+  cout << response[randomNumber].phrase << endl;
+  cout << response[randomNumber].type << endl;
   return randomNumber;
 }
 //*********************************************************************************************************
@@ -90,11 +90,11 @@ int playMagic8() {
 //*********************************************************************************************************
 
 void printResponsesAndCategories() {
-  sort(Response, Response + 20, aCompare);
+  sort(response, response + 20, compare);
   cout << "\nPhrase, Type:" << endl;
   for (int i = 0; i < 20; ++i) {
-    cout << Response[i].phrase << ", "
-         << Response[i].type << endl;
+    cout << response[i].phrase << ", "
+         << response[i].type << endl;
   }
 }
 //*********************************************************************************************************
@@ -107,8 +107,8 @@ void writeResponsesToFile() {
   // open or create output.txt file
   outfile.open("output.txt");
   // iterate through data
-  for (auto &i : Response) {
-    sort(Response, Response + 20, aCompare);
+  for (auto &i : response) {
+    sort(response, response + 20, compare);
     // store to output.txt separated by comma
     outfile << i.phrase << "\n" << i.type << endl;
   }
@@ -120,17 +120,16 @@ void writeResponsesToFile() {
 //*********************************************************************************************************
 
 void deleteResponse() {
-  int element;
+
+  //TODO Delete a response
+  /*int element;
   cout << "Which element would you like to delete?"
        << "1-20" << endl;
   cin >> element;
 
-  cout << "delete response" << endl;
+  cout << "delete response" << endl;*/
 }
-//*********************************************************************************************************
-// Helpers (optional) - you are welcome to add as many helper functions as you
-// need
-//*********************************************************************************************************
+
 void menu() {
   char choice;
 
