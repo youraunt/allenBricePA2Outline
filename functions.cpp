@@ -16,7 +16,7 @@
 
 #define MAXSIZE 100
 //*********************************************************************************************************
-// inherit from bernoulli_distribution to generate more randomness in number
+// inherit from bernoulli_distribution to generate more randomness in number than rand
 struct Response : public bernoulli_distribution {
   string phrase;
   string type;
@@ -53,7 +53,7 @@ void readResponses() {
 //*********************************************************************************************************
 // Requirement B
 // function playMagic8 to ask the ball questions and get responses
-void playMagic8() {
+int playMagic8() {
   // declare local variable
   string question;
   // prompt user to enter a question
@@ -75,6 +75,7 @@ void playMagic8() {
   // display random phrase and type
   cout << Response[randomNumber].phrase << endl;
   cout << Response[randomNumber].type << endl;
+  return randomNumber;
 }
 //*********************************************************************************************************
 // Requirement C
@@ -82,7 +83,8 @@ void printResponsesAndCategories() {
   sort(Response, Response + 20, aCompare);
   cout << "\nPhrase, Type:" << endl;
   for (int i = 0; i < 20; ++i) {
-    cout << Response[i].phrase << ", " << Response[i].type << endl;
+    cout << Response[i].phrase << ", "
+         << Response[i].type << endl;
   }
 }
 //*********************************************************************************************************
@@ -123,7 +125,7 @@ void menu() {
   do {
 
     cout << "\n\n--------------------------------" << endl;
-    cout << "\tMenu";
+    cout << "\t\t\tMenu";
     cout << "\n--------------------------------" << endl;
 
     cout << "A. Read responses from a file" << endl;

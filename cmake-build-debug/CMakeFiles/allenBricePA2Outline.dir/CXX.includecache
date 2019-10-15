@@ -9,11 +9,11 @@
 /Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/functions.cpp
 functions.h
 /Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/functions.h
-iostream
+algorithm
 -
 fstream
 -
-algorithm
+iostream
 -
 cstring
 -
@@ -35,4 +35,12 @@ iostream
 -
 random
 -
+
+/Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/main.cpp
+iostream
+-
+string
+-
+functions.h
+/Users/bkallen/Desktop/CU Fall 2019/cFundies/allenBricePA2Outline/functions.h
 

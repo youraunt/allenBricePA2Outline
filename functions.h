@@ -26,7 +26,7 @@ using namespace std;
 void readResponses();
 
 //B
-void playMagic8();
+int playMagic8();
 
 //C
 void printResponsesAndCategories();
