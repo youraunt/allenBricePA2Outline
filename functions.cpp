@@ -36,7 +36,9 @@ bool compare(const struct response &lhs, struct response &rhs) {
 // Requirement A
 //*********************************************************************************************************
 
-void readResponses() {
+int readResponses() {
+   int currentSize =0;
+
   // initiate file stream
   ifstream infile;
   // open file
@@ -48,13 +50,15 @@ void readResponses() {
     exit(EXIT_FAILURE);
   }
   // range based loop to iterate through struct
-  for (auto &response : response) {
+  for (auto &response1 : response) {
     // grab lines from file
-    getline(infile, response.phrase);
-    getline(infile, response.type);
+    getline(infile, response1.phrase);
+    getline(infile, response1.type);
+    currentSize++;
   }
   // let user know that file was read successfully
   cout << "Responses successfully uploaded!" << endl;
+  return currentSize;
 }
 //*********************************************************************************************************
 // Requirement B
@@ -120,14 +124,12 @@ void writeResponsesToFile() {
 //*********************************************************************************************************
 
 void deleteResponse() {
-
   //TODO Delete a response
-  /*int element;
-  cout << "Which element would you like to delete?"
-       << "1-20" << endl;
-  cin >> element;
+  for (int i = 0; i < 20; ++i) {
+    response[i] = response[i+1];
+    //response[20-1];
 
-  cout << "delete response" << endl;*/
+  }
 }
 
 void menu() {
