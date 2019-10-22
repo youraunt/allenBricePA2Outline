@@ -7,10 +7,6 @@
 #include <fstream>
 #include <iostream>
 
-#include <cstring>
-
-#include <string>
-
 #include <ctime>
 #include <set>
 
@@ -131,6 +127,10 @@ void deleteResponse() {
 
   }
 }
+//*********************************************************************************************************
+//  Main method cout menu cin user input
+// handle user menu choice with switch statement
+//*********************************************************************************************************
 
 void menu() {
   char choice;
@@ -188,6 +188,6 @@ void menu() {
 
       cout << "\nInvalid choice\n\n\n" << endl;
       break;
-    }
-  } while (choice != 'F');
-}
+    }// switch
+  } while (choice != 'F');// do while
+}// main
