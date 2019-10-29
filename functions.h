@@ -20,10 +20,12 @@
 
 using namespace std;
 
+#define MAXSIZE 100
 
 
 //Requirement A
-int readResponses(int currentSize);
+
+int readResponses();
 
 //B
 int playMagic8();
