@@ -10,66 +10,13 @@
 
 using namespace std;
 
-int main()
 
-{
-    char choice;
 
-    string question;
-
-    do {
-
-        cout << "\n\n--------------------------------" << endl;
-        cout << "\t\t\tMenu";
-        cout << "\n--------------------------------" << endl;
-
-        cout << "A. Read responses from a file" << endl;
-        cout << "B. Play Magic Eight Ball" << endl;
-        cout << "C. Print out responses and categories alphabetically" << endl;
-        cout << "D. Write responses to a file" << endl;
-        cout << "E. Delete response" << endl;
-        cout << "F. Exit" << endl;
-        cout << "Enter your choice: " << endl;
-
-        cin >> choice;
-
-        switch (choice) {
-
-            case 'a':
-            case 'A':
-                readResponses();
-                break;
-
-            case 'b':
-            case 'B':
-                playMagic8();
-                break;
-
-            case 'c':
-            case 'C':
-                printResponsesAndCategories();
-                break;
-
-            case 'd':
-            case 'D':
-                writeResponsesToFile();
-                break;
-
-            case 'e':
-            case 'E':;
-                //@TODO implement deleteResponse();
-                deleteResponse();
-                break;
-
-            case 'f':
-            case 'F':
-                exit(EXIT_SUCCESS);
-
-            default:
-
-                cout << "\nInvalid choice\n\n\n" << endl;
-                break;
-        }// switch
-    } while (choice != 'F');// do while
+/// @brief main method compilation begins and ends here
+/// @return 0 implied
+int main(){
+    while(menu());
+    cout << "Goodbye!" << endl;
+    exit(EXIT_SUCCESS);
 }// main
 #undef MAXSIZE

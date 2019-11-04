@@ -17,6 +17,7 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 
@@ -41,7 +42,7 @@ void deleteResponse();
 
 
 //Helpers (optional) - you are welcome to add as many helper functions as you need
-void menu();
+bool menu();
 
 
 
