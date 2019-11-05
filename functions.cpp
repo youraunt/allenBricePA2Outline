@@ -3,18 +3,6 @@
 //
 
 #include "functions.h"
-
-
-//*********************************************************************************************************
-// inherit from bernoulli_distribution to generate more randomness in number than rand
-//*********************************************************************************************************
-
-struct Response : public bernoulli_distribution {
-    string phrase;
-    string type;
-} response[MAXSIZE];
-
-
 /**
  * @brief Prints an error message for when a users input is invalid
  */
@@ -23,54 +11,6 @@ void unknownInput() {
     cout << "Error?! Please, try again: " << endl;
 }
 
-/// @brief  bool function to handle menu
-/// @return true unless user want to exit program
-bool menu() {
-    cout << "\n\n--------------------------------" << endl;
-    cout << "\t\t\tMenu";
-    cout << "\n--------------------------------" << endl;
-    cout << "A. Read responses from a file" << endl;
-    cout << "B. Play Magic Eight Ball" << endl;
-    cout << "C. Print out responses and categories alphabetically" << endl;
-    cout << "D. Write responses to a file" << endl;
-    cout << "E. Delete Response" << endl;
-    cout << "F. Exit" << endl;
-    cout << "Enter your choice: " << endl;
-
-    char choice;
-    cin >> choice;
-
-    switch (choice) {
-        case 'a':
-        case 'A':
-            readResponses();
-            break;
-        case 'b':
-        case 'B':
-            playMagic8();
-            break;
-        case 'c':
-        case 'C':
-            printResponsesAndCategories();
-            break;
-        case 'd':
-        case 'D':
-            writeResponsesToFile();
-            break;
-        case 'e':
-        case 'E':;
-            //@TODO implement deleteResponse();
-            deleteResponse();
-            break;
-        case 'f':
-        case 'F':
-            return false;
-        default:
-            unknownInput();
-    }// switch
-    cout << endl;
-    return true;
-}// bool menu
 
 //*********************************************************************************************************
 // helper function to sort alphabetically by phrase
@@ -88,9 +28,8 @@ bool compare(const struct Response &lhs, struct Response &rhs) {
 //*********************************************************************************************************
 /// @brief
 /// @return
-int readResponses() {
+int readResponses(Response* response) {
     int currentSize = 0;
-
     // initiate file stream
     ifstream infile;
     // open file
@@ -103,24 +42,24 @@ int readResponses() {
         exit(EXIT_FAILURE);
     }
     // range based loop to iterate through struct
-    for (auto &response1 : response) {
+    for (int i =0; i<MAXSIZE(); ++i) {
+
         // grab lines from file
-        getline(infile, response1.phrase);
-        getline(infile, response1.type);
+        getline(infile, response->phrase);
+        getline(infile, response->type);
         currentSize++;
     }
     // let user know that file was read successfully
     cout << "Responses successfully uploaded!" << endl;
     return currentSize;
 }
-
 //*********************************************************************************************************
 // Requirement B
 // function playMagic8 to ask the ball questions and get responses
 //*********************************************************************************************************
 /// @brief
 /// @return
-int playMagic8() {
+int playMagic8(Response* response) {
     // declare local variable
     string question;
     // prompt user to enter a question
@@ -149,7 +88,7 @@ int playMagic8() {
 // Requirement C
 //*********************************************************************************************************
 /// @brief
-void printResponsesAndCategories() {
+void printResponsesAndCategories(Response* response) {
     sort(response, response + 20, compare);
     cout << "\nPhrase, Type:" << endl;
     for (int i = 0; i < 20; ++i) {
@@ -162,17 +101,17 @@ void printResponsesAndCategories() {
 // Requirement D
 //*********************************************************************************************************
 /// @brief
-void writeResponsesToFile() {
+void writeResponsesToFile(Response *response) {
     // initialize ofstream
     ofstream outfile;
     // open or create output.txt file
     outfile.open("output.txt");
     // iterate through data
-    for (auto &i : response) {
+    for (int i =0; i<MAXSIZE(); ++i) {
         sort(response, response + 20, compare);
-        // store to output.txt separated by comma
-        outfile << i.phrase << "\n"
-                << i.type << endl;
+        // store to output.txt
+        outfile << response[i].phrase << "\n"
+                << response[i].type << endl;
     }
     // let user know of successful file output
     cout << "\nSuccessfully stored to file!" << endl;
@@ -182,19 +121,66 @@ void writeResponsesToFile() {
 // Extra credit
 //*********************************************************************************************************
 /// @brief
-void deleteResponse() {
+void deleteResponse(Response *response) {
     //TODO Delete a Response
      int index;
     cout << "What index do you want to delete?" << endl;
     cin >> index;
-    while (index >= MAXSIZE) {
+    while (index >= MAXSIZE()) {
         cout << "Out of bounds!" << endl
              << "Try Again!" << endl;
         cin >> index;
     }
 
-    memmove(response + index, response + (index + 1), (MAXSIZE-index - 1) * sizeof(Response));
+    memmove(response + index, response + (index + 1), (MAXSIZE()-index - 1) * sizeof(Response));
 
     cout << "Deleted " << index << " successfully!" << endl;
 }
 
+/// @brief  bool function to handle menu
+/// @return true unless user want to exit program
+bool menu(Response *response) {
+    cout << "\n\n--------------------------------" << endl;
+    cout << "\t\t\tMenu";
+    cout << "\n--------------------------------" << endl;
+    cout << "A. Read responses from a file" << endl;
+    cout << "B. Play Magic Eight Ball" << endl;
+    cout << "C. Print out responses and categories alphabetically" << endl;
+    cout << "D. Write responses to a file" << endl;
+    cout << "E. Delete Response" << endl;
+    cout << "F. Exit" << endl;
+    cout << "Enter your choice: " << endl;
+
+    char choice;
+    cin >> choice;
+
+    switch (choice) {
+        case 'a':
+        case 'A':
+            readResponses(response);
+            break;
+        case 'b':
+        case 'B':
+            playMagic8(response);
+            break;
+        case 'c':
+        case 'C':
+            printResponsesAndCategories(response);
+            break;
+        case 'd':
+        case 'D':
+            writeResponsesToFile(response);
+            break;
+        case 'e':
+        case 'E':;
+            deleteResponse(response);
+            break;
+        case 'f':
+        case 'F':
+            return false;
+        default:
+            unknownInput();
+    }// switch
+    cout << endl;
+    return true;
+}// bool menu

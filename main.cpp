@@ -14,8 +14,12 @@ using namespace std;
 
 /// @brief main method compilation begins and ends here
 /// @return 0 implied
-int main(){
-    while(menu());
+int main() {
+    unsigned int responseSize = MAXSIZE();
+    unsigned int responseCount = 0;
+    auto *response = (Response*) malloc(sizeof(Response)
+    *responseSize);
+    while (menu(response));
     cout << "Goodbye!" << endl;
     exit(EXIT_SUCCESS);
 }// main
