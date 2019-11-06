@@ -14,7 +14,7 @@ using namespace std;
 /// @brief main method compilation begins and ends here
 /// @return 0 implied
 int main() {
-     int responseMax = maxsize();
+     int responseMax = sizeLimit();
      int currentSize = 0;
     auto *response = (Response *) malloc(sizeof(Response)
                                          * responseMax);

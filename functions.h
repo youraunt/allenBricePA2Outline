@@ -33,10 +33,10 @@ using namespace std;
 
 //Requirement A
 
- int readResponses(Response *response,  int &currentSize);
+int readResponses(Response *response, int &currentSize);
 
 //B
-int playMagic8(Response *response,  int responseSize,  int &currentSize);
+void playMagic8(Response *response, int &currentSize);
 
 //C
 void printResponsesAndCategories(Response *response,  int responseSize,  int &currentSize);
@@ -53,7 +53,7 @@ bool menu(Response *response,  int responseSize,  int &currentSize);
 
 void unknownInput();
 
-int maxsize();
+int sizeLimit();
 
 
 #endif //ALLENBRICEPA2OUTLINE_FUNCTIONS_H

@@ -5,9 +5,9 @@
 #include "functions.h"
 
 
-/// @brief function to define MAXSIZE
+/// @brief function to define sizeLimit
 /// @return
-int  maxsize(){
+int sizeLimit() {
     return 100;
 };
 
@@ -23,7 +23,7 @@ void unknownInput() {
 /// @param lhs
 /// @param rhs
 /// @return
-bool compare(struct Response &lhs, struct Response &rhs) {
+bool compare(const struct Response &lhs, const struct Response &rhs) {
     return lhs.phrase < rhs.phrase;
 }// bool compare
 
@@ -32,7 +32,7 @@ bool compare(struct Response &lhs, struct Response &rhs) {
 //*********************************************************************************************************
 /// @brief
 /// @return
- int readResponses(Response *response, int &currentSize) {
+int readResponses(Response *response, int &currentSize) {
     // initiate file stream
     ifstream infile;
     // open file
@@ -44,28 +44,28 @@ bool compare(struct Response &lhs, struct Response &rhs) {
         cerr << "File not found!" << endl;
         exit(EXIT_FAILURE);
     }
-
-    for (int i =0; i<20; i++) {
+    for (int i = 0; i < 20; ++i) {
         // grab lines from file
         getline(infile, response[i].phrase);
         getline(infile, response[i].type);
-        currentSize++;
+        ++currentSize;
     }
     // let user know that file was read successfully
     cout << "Responses successfully uploaded!" << endl;
     return currentSize;
 }
+
 //*********************************************************************************************************
 // Requirement B
 // function playMagic8 to ask the ball questions and get responses
 //*********************************************************************************************************
 /// @brief
 /// @return
-int playMagic8(Response *response,  int responseMax,  int &currentSize) {
+void playMagic8(Response *response, int &currentSize) {
     // declare local variable
     string question;
     // prompt user to enter a question
-    cout << "\n\nEnter your question: " << endl;
+    cout << "\nEnter your question: " << endl;
     // ignore blank input
     cin.ignore();
     // get user input store string variable question
@@ -75,26 +75,25 @@ int playMagic8(Response *response,  int responseMax,  int &currentSize) {
     // create engine and seed it
     mt19937 engine{randomDevice()};
     // distribution in range [1, 20]
-    uniform_int_distribution<mt19937::result_type> dist20(0, currentSize+0);
+    uniform_int_distribution<mt19937::result_type> dist20(0, currentSize + 0);
     // assign random number to int type variable named randomNumber
     int randomNumber = dist20(engine);
     // display users question with punctuation
-    cout << "\n" << question << "?" << endl;
+    cout << question << "?" << endl;
     // display random phrase and type
     cout << response[randomNumber].phrase << endl;
     cout << response[randomNumber].type << endl;
-    return randomNumber;
 }
 
 //*********************************************************************************************************
 // Requirement C
 //*********************************************************************************************************
 /// @brief
-void printResponsesAndCategories(Response *response,  int responseMax,  int &currentSize) {
-    sort(response,response+currentSize, compare);
+void printResponsesAndCategories(Response *response, int responseMax, int &currentSize) {
+    sort(response, response + currentSize, compare);
     cout << "\nPhrase, Type:" << endl;
-    for (int i = 0; i < currentSize; ++i) {
-        cout << response[i].phrase << " "
+    for (int i = 0; i < currentSize; i++) {
+        cout << i << ": " << response[i].phrase << " "
              << response[i].type << endl;
     }
 }
@@ -103,14 +102,14 @@ void printResponsesAndCategories(Response *response,  int responseMax,  int &cur
 // Requirement D
 //*********************************************************************************************************
 /// @brief
-void writeResponsesToFile(Response *response,  int responseMax,  int &currentSize) {
+void writeResponsesToFile(Response *response, int responseMax, int &currentSize) {
     // initialize ofstream
     ofstream outfile;
     // open or create output.txt file
     outfile.open("output.txt");
     // iterate through data
-    for (int i =0; i<currentSize; ++i) {
-        sort(response, response+currentSize, compare);
+    for (int i = 0; i < currentSize; ++i) {
+        sort(response, response + currentSize, compare);
         // store to output.txt
         outfile << response[i].phrase << "\n"
                 << response[i].type << endl;
@@ -123,25 +122,32 @@ void writeResponsesToFile(Response *response,  int responseMax,  int &currentSiz
 // Extra credit
 //*********************************************************************************************************
 /// @brief
-void deleteResponse(Response *response,  int responseMax,  int &currentSize) {
+void deleteResponse(Response *response, int responseMax, int &currentSize) {
     //TODO Delete a Response
+
     int index;
-    cout << "What index do you want to delete?" << endl;
-    cin>>index;
-    while (!(cin>>index) || index >= responseMax) {
+    cout << "What index do you want to delete? 0 - " << (currentSize - 1) << endl;
+    cin >> index;
+    while (index > currentSize) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         unknownInput();
-    }
-string deletedIndex = response[index].phrase;
-    memmove(response + index, response + (index + 1), (currentSize-index - 1) * sizeof(Response));
+        cin >> index;
 
-    cout << "Deleted index: " << index << " " << "\"" << deletedIndex << "\"" << " successfully!" << endl;
+    }
+    string deletedIndex = response[index].phrase;
+    /// @brief The memmove() function copies len bytes from string src to string dst.
+    //     The two strings may overlap; the copy is always done in a non-destructive
+    //     manner.
+    //  @return The memmove() function returns the original value of dst.
+    memmove(response + index, response + (index + 1), (currentSize - index - 1) * sizeof(Response));
+    currentSize = (currentSize - 1);
+    cout << "Deleted index " << index << ", " << "\"" << deletedIndex << "\"" << " successfully!" << endl;
 }
 
 /// @brief  bool function to handle menu
 /// @return true unless user want to exit program
-bool menu(Response *response,  int responseSize,  int &currentSize) {
+bool menu(Response *response, int responseSize, int &currentSize) {
     cout << "\n\n-----------------------------" << endl;
     cout << "\t\t\tMenu";
     cout << "\n-----------------------------" << endl;
@@ -155,7 +161,6 @@ bool menu(Response *response,  int responseSize,  int &currentSize) {
 
     char choice;
     cin >> choice;
-
     switch (choice) {
         case 'a':
         case 'A':
@@ -163,7 +168,7 @@ bool menu(Response *response,  int responseSize,  int &currentSize) {
             break;
         case 'b':
         case 'B':
-            playMagic8(response, responseSize, currentSize);
+            playMagic8(response, currentSize);
             break;
         case 'c':
         case 'C':
