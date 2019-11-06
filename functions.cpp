@@ -3,14 +3,18 @@
 //
 
 #include "functions.h"
-/**
- * @brief Prints an error message for when a users input is invalid
- */
 
+
+/// @brief function to define MAXSIZE
+/// @return
+int  maxsize(){
+    return 100;
+};
+
+/// @brief Handles unusable input
 void unknownInput() {
     cout << "Error?! Please, try again: " << endl;
 }
-
 
 //*********************************************************************************************************
 // helper function to sort alphabetically by phrase
@@ -19,7 +23,7 @@ void unknownInput() {
 /// @param lhs
 /// @param rhs
 /// @return
-bool compare(const struct Response &lhs, struct Response &rhs) {
+bool compare(struct Response &lhs, struct Response &rhs) {
     return lhs.phrase < rhs.phrase;
 }// bool compare
 
@@ -28,8 +32,7 @@ bool compare(const struct Response &lhs, struct Response &rhs) {
 //*********************************************************************************************************
 /// @brief
 /// @return
-int readResponses(Response* response) {
-    int currentSize = 0;
+ int readResponses(Response *response, int &currentSize) {
     // initiate file stream
     ifstream infile;
     // open file
@@ -41,12 +44,11 @@ int readResponses(Response* response) {
         cerr << "File not found!" << endl;
         exit(EXIT_FAILURE);
     }
-    // range based loop to iterate through struct
-    for (int i =0; i<MAXSIZE(); ++i) {
 
+    for (int i =0; i<20; i++) {
         // grab lines from file
-        getline(infile, response->phrase);
-        getline(infile, response->type);
+        getline(infile, response[i].phrase);
+        getline(infile, response[i].type);
         currentSize++;
     }
     // let user know that file was read successfully
@@ -59,7 +61,7 @@ int readResponses(Response* response) {
 //*********************************************************************************************************
 /// @brief
 /// @return
-int playMagic8(Response* response) {
+int playMagic8(Response *response,  int responseMax,  int &currentSize) {
     // declare local variable
     string question;
     // prompt user to enter a question
@@ -73,7 +75,7 @@ int playMagic8(Response* response) {
     // create engine and seed it
     mt19937 engine{randomDevice()};
     // distribution in range [1, 20]
-    uniform_int_distribution<mt19937::result_type> dist20(1, 20);
+    uniform_int_distribution<mt19937::result_type> dist20(0, currentSize+0);
     // assign random number to int type variable named randomNumber
     int randomNumber = dist20(engine);
     // display users question with punctuation
@@ -88,11 +90,11 @@ int playMagic8(Response* response) {
 // Requirement C
 //*********************************************************************************************************
 /// @brief
-void printResponsesAndCategories(Response* response) {
-    sort(response, response + 20, compare);
+void printResponsesAndCategories(Response *response,  int responseMax,  int &currentSize) {
+    sort(response,response+currentSize, compare);
     cout << "\nPhrase, Type:" << endl;
-    for (int i = 0; i < 20; ++i) {
-        cout << response[i].phrase << ", "
+    for (int i = 0; i < currentSize; ++i) {
+        cout << response[i].phrase << " "
              << response[i].type << endl;
     }
 }
@@ -101,14 +103,14 @@ void printResponsesAndCategories(Response* response) {
 // Requirement D
 //*********************************************************************************************************
 /// @brief
-void writeResponsesToFile(Response *response) {
+void writeResponsesToFile(Response *response,  int responseMax,  int &currentSize) {
     // initialize ofstream
     ofstream outfile;
     // open or create output.txt file
     outfile.open("output.txt");
     // iterate through data
-    for (int i =0; i<MAXSIZE(); ++i) {
-        sort(response, response + 20, compare);
+    for (int i =0; i<currentSize; ++i) {
+        sort(response, response+currentSize, compare);
         // store to output.txt
         outfile << response[i].phrase << "\n"
                 << response[i].type << endl;
@@ -121,28 +123,28 @@ void writeResponsesToFile(Response *response) {
 // Extra credit
 //*********************************************************************************************************
 /// @brief
-void deleteResponse(Response *response) {
+void deleteResponse(Response *response,  int responseMax,  int &currentSize) {
     //TODO Delete a Response
-     int index;
+    int index;
     cout << "What index do you want to delete?" << endl;
-    cin >> index;
-    while (index >= MAXSIZE()) {
-        cout << "Out of bounds!" << endl
-             << "Try Again!" << endl;
-        cin >> index;
+    cin>>index;
+    while (!(cin>>index) || index >= responseMax) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        unknownInput();
     }
+string deletedIndex = response[index].phrase;
+    memmove(response + index, response + (index + 1), (currentSize-index - 1) * sizeof(Response));
 
-    memmove(response + index, response + (index + 1), (MAXSIZE()-index - 1) * sizeof(Response));
-
-    cout << "Deleted " << index << " successfully!" << endl;
+    cout << "Deleted index: " << index << " " << "\"" << deletedIndex << "\"" << " successfully!" << endl;
 }
 
 /// @brief  bool function to handle menu
 /// @return true unless user want to exit program
-bool menu(Response *response) {
-    cout << "\n\n--------------------------------" << endl;
+bool menu(Response *response,  int responseSize,  int &currentSize) {
+    cout << "\n\n-----------------------------" << endl;
     cout << "\t\t\tMenu";
-    cout << "\n--------------------------------" << endl;
+    cout << "\n-----------------------------" << endl;
     cout << "A. Read responses from a file" << endl;
     cout << "B. Play Magic Eight Ball" << endl;
     cout << "C. Print out responses and categories alphabetically" << endl;
@@ -157,23 +159,23 @@ bool menu(Response *response) {
     switch (choice) {
         case 'a':
         case 'A':
-            readResponses(response);
+            readResponses(response, currentSize);
             break;
         case 'b':
         case 'B':
-            playMagic8(response);
+            playMagic8(response, responseSize, currentSize);
             break;
         case 'c':
         case 'C':
-            printResponsesAndCategories(response);
+            printResponsesAndCategories(response, responseSize, currentSize);
             break;
         case 'd':
         case 'D':
-            writeResponsesToFile(response);
+            writeResponsesToFile(response, responseSize, currentSize);
             break;
         case 'e':
         case 'E':;
-            deleteResponse(response);
+            deleteResponse(response, responseSize, currentSize);
             break;
         case 'f':
         case 'F':

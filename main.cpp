@@ -11,16 +11,14 @@
 using namespace std;
 
 
-
 /// @brief main method compilation begins and ends here
 /// @return 0 implied
 int main() {
-    unsigned int responseSize = MAXSIZE();
-    unsigned int responseCount = 0;
-    auto *response = (Response*) malloc(sizeof(Response)
-    *responseSize);
-    while (menu(response));
-    cout << "Goodbye!" << endl;
+     int responseMax = maxsize();
+     int currentSize = 0;
+    auto *response = (Response *) malloc(sizeof(Response)
+                                         * responseMax);
+    while (menu(response, responseMax, currentSize));
+    cout << "Exiting program!" << endl;
     exit(EXIT_SUCCESS);
 }// main
-#undef MAXSIZE
