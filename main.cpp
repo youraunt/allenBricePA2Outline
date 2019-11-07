@@ -8,7 +8,6 @@
 
 #include "functions.h"
 
-using namespace std;
 
 
 /// @brief main method compilation begins and ends here
@@ -16,9 +15,10 @@ using namespace std;
 int main() {
      int responseMax = sizeLimit();
      int currentSize = 0;
-    auto *response = (Response *) malloc(sizeof(Response)
-                                         * responseMax);
+     // i used malloc here to allocate directly on the stack and free
+     // up automatically when out of scope
+    auto *response = (Response *) malloc(sizeof(Response)* responseMax);
     while (menu(response, responseMax, currentSize));
-    cout << "Exiting program!" << endl;
+    std::cout << "Exiting program!" << std::endl;
     exit(EXIT_SUCCESS);
 }// main

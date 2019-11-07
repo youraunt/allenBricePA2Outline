@@ -1,0 +1,20 @@
+0. As I see it, yes! Positive!
+1. Ask again later. Vague!
+2. Better not tell you now. Vague!
+3. Cannot predict now. Vague!
+4. Concentrate and ask again. Vague!
+5. Don't count on it! Negative!
+6. It is certain! Positive!
+7. It is decidedly so! Positive!
+8. Most likely. Positive!
+9. My reply is no! Negative!
+10. My sources say no. Negative!
+11. Outlook good! Positive!
+12. Outlook not so good! Negative!
+13. Reply hazy, try again. Vague!
+14. Signs point to yes!!! Positive!
+15. Very doubtful! Negative!
+16. Without a doubt! Positive!
+17. Yes!!! Positive!
+18. Yes, definitely! Positive!
+19. You may rely on it. Positive!

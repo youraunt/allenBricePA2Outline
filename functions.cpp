@@ -13,47 +13,52 @@ int sizeLimit() {
 
 /// @brief Handles unusable input
 void unknownInput() {
-    cout << "Error?! Please, try again: " << endl;
+    std::cout << "Error?! Please, try again: " << std::endl;
 }
 
-//*********************************************************************************************************
-// helper function to sort alphabetically by phrase
-//*********************************************************************************************************
 /// @brief
+void fileNotFound() {
+    std::cerr << "File not found! \nExiting Program!" << std::endl;
+    exit(EXIT_FAILURE);
+}
+
+
+/// @brief Helper function to sort alphabetically by phrase
 /// @param lhs
 /// @param rhs
 /// @return
-bool compare(const struct Response &lhs, const struct Response &rhs) {
-    return lhs.phrase < rhs.phrase;
-}// bool compare
+bool compare(const struct Response &lhs, const struct Response &rhs) { return lhs.phrase < rhs.phrase; }// bool compare
 
 //*********************************************************************************************************
 // Requirement A
 //*********************************************************************************************************
-/// @brief
+/// @brief Function to read responses in from file
+/// @param response The storage container being read into.
+/// @param currentSize The current size of the array
 /// @return
-int readResponses(Response *response, int &currentSize) {
+int readResponses(Response *response, int responseMax, int &currentSize) {
     // initiate file stream
-    ifstream infile;
+    std::ifstream infile;
     // open file
     infile.open("data.txt");
     /* check that file exists and is valid else display
      * error and exit program with error
-     * */
-    if (!infile || infile.fail()) {
-        cerr << "File not found!" << endl;
-        exit(EXIT_FAILURE);
-    }
-    for (int i = 0; i < 20; ++i) {
-        // grab lines from file
-        getline(infile, response[i].phrase);
-        getline(infile, response[i].type);
-        ++currentSize;
-    }
+     */
+    if (!infile || infile.fail()) { fileNotFound();}
+    if (currentSize < responseMax) {
+        for (int i = 0; i < 20; i++) {
+            // grab lines from file
+            getline(infile, response[i].phrase);
+            getline(infile, response[i].type);
+            currentSize++;
+        }
+    }//while
     // let user know that file was read successfully
-    cout << "Responses successfully uploaded!" << endl;
+    std::cout << "Responses successfully uploaded!" << std::endl;
+    infile.close();
     return currentSize;
-}
+    infile.close();
+}//readResponses
 
 //*********************************************************************************************************
 // Requirement B
@@ -63,131 +68,142 @@ int readResponses(Response *response, int &currentSize) {
 /// @return
 void playMagic8(Response *response, int &currentSize) {
     // declare local variable
-    string question;
+    std::string question;
     // prompt user to enter a question
-    cout << "\nEnter your question: " << endl;
+    std::cout << "\nEnter your question: " << std::endl;
     // ignore blank input
-    cin.ignore();
+    std::cin.ignore();
     // get user input store string variable question
-    getline(cin, question);
+    getline(std::cin, question);
     // create object for seeding
-    random_device randomDevice;
+    std::random_device randomDevice;
     // create engine and seed it
-    mt19937 engine{randomDevice()};
-    // distribution in range [1, 20]
-    uniform_int_distribution<mt19937::result_type> dist20(0, currentSize + 0);
+    std::mt19937 engine{randomDevice()};
+    // distribution in range [1, currentSize]
+    std::uniform_int_distribution<std::mt19937::result_type> dist20(0, currentSize + 0);
     // assign random number to int type variable named randomNumber
     int randomNumber = dist20(engine);
     // display users question with punctuation
-    cout << question << "?" << endl;
+    std::cout << question << " ?" << std::endl;
     // display random phrase and type
-    cout << response[randomNumber].phrase << endl;
-    cout << response[randomNumber].type << endl;
-}
+    std::cout << response[randomNumber].phrase << std::endl;
+    std::cout << response[randomNumber].type << std::endl;
+}//playMagic8
 
 //*********************************************************************************************************
 // Requirement C
 //*********************************************************************************************************
 /// @brief
+/// @param response
+/// @param responseMax
+/// @param currentSize
 void printResponsesAndCategories(Response *response, int responseMax, int &currentSize) {
-    sort(response, response + currentSize, compare);
-    cout << "\nPhrase, Type:" << endl;
+    sort(response + 0, response + currentSize, compare);
+    std::cout << "\nPhrase, Type:" << std::endl;
+    if (currentSize < responseMax) { unknownInput(); }
     for (int i = 0; i < currentSize; i++) {
-        cout << i << ": " << response[i].phrase << " "
-             << response[i].type << endl;
-    }
-}
+        std::cout << i << ": " << response[i].phrase << " "
+                  << response[i].type << std::endl;
+    }//if
+}//printResponseAndCategories
 
 //*********************************************************************************************************
 // Requirement D
 //*********************************************************************************************************
 /// @brief
-void writeResponsesToFile(Response *response, int responseMax, int &currentSize) {
+/// @param response
+/// @param responseMax
+/// @param currentSize
+void writeResponsesToFile(Response *response, int &currentSize) {
     // initialize ofstream
-    ofstream outfile;
+    std::ofstream outfile;
     // open or create output.txt file
     outfile.open("output.txt");
     // iterate through data
-    for (int i = 0; i < currentSize; ++i) {
+    for (int i = 0; i < currentSize; i++) {
         sort(response, response + currentSize, compare);
         // store to output.txt
-        outfile << response[i].phrase << "\n"
-                << response[i].type << endl;
-    }
+        outfile << i << ". "
+                << response[i].phrase << " "
+                << response[i].type << std::endl;
+    }//for
     // let user know of successful file output
-    cout << "\nSuccessfully stored to file!" << endl;
-}
+    std::cout << "\nSuccessfully stored to file!" << std::endl;
+}// writeResponseToFile
 
 //*********************************************************************************************************
 // Extra credit
 //*********************************************************************************************************
-/// @brief
-void deleteResponse(Response *response, int responseMax, int &currentSize) {
-    //TODO Delete a Response
-
+/// @brief Function to delete an element by user supplied index number
+/// @param response
+/// @param responseMax
+/// @param currentSize
+void deleteResponse(Response *response, int &currentSize) {
     int index;
-    cout << "What index do you want to delete? 0 - " << (currentSize - 1) << endl;
-    cin >> index;
-    while (index > currentSize) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::cout << "What index do you want to delete? 0 - " << (currentSize - 1) << std::endl;
+    std::cin >> index;
+    while (std::cin.fail() || index >= currentSize) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         unknownInput();
-        cin >> index;
-
-    }
-    string deletedIndex = response[index].phrase;
+        std::cin >> index;
+    }//while
+    std::string deletedIndex = response[index].phrase;
     /// @brief The memmove() function copies len bytes from string src to string dst.
     //     The two strings may overlap; the copy is always done in a non-destructive
     //     manner.
+    //  @param dst: destination Pointer to the destination array where the content is to be copied,
+    //  type-casted to a pointer of type void*.
+    //  @param src: source Pointer to the source of data to be copied,
+    //  type-casted to a pointer of type const void*
     //  @return The memmove() function returns the original value of dst.
     memmove(response + index, response + (index + 1), (currentSize - index - 1) * sizeof(Response));
     currentSize = (currentSize - 1);
-    cout << "Deleted index " << index << ", " << "\"" << deletedIndex << "\"" << " successfully!" << endl;
-}
+    std::cout << "Deleted index " << index << ", " << "\"" << deletedIndex << "\"" << " successfully!" << std::endl;
+}// deleteResponse
 
-/// @brief  bool function to handle menu
-/// @return true unless user want to exit program
-bool menu(Response *response, int responseSize, int &currentSize) {
-    cout << "\n\n-----------------------------" << endl;
-    cout << "\t\t\tMenu";
-    cout << "\n-----------------------------" << endl;
-    cout << "A. Read responses from a file" << endl;
-    cout << "B. Play Magic Eight Ball" << endl;
-    cout << "C. Print out responses and categories alphabetically" << endl;
-    cout << "D. Write responses to a file" << endl;
-    cout << "E. Delete Response" << endl;
-    cout << "F. Exit" << endl;
-    cout << "Enter your choice: " << endl;
+/// @brief bool function to handle menu
+/// @param response
+/// @param responseSize
+/// @param currentSize
+/// @return true until user wants to exit program
+bool menu(Response *response, int responseMax, int &currentSize) {
+    std::cout << "\n\n-----------------------------" << std::endl
+              << "\t\t\tMenu"
+              << "\n-----------------------------" << std::endl
+              << "A. Read responses from a file" << std::endl
+              << "B. Play Magic Eight Ball" << std::endl
+              << "C. Print out responses and categories alphabetically" << std::endl
+              << "D. Write responses to a file" << std::endl
+              << "E. Delete Response" << std::endl
+              << "F. Exit" << std::endl
+              << "Enter your choice: " <<std::endl;
 
     char choice;
-    cin >> choice;
+    std::cin >> choice;
+    choice = toupper(choice);
     switch (choice) {
-        case 'a':
+        /*case 'a':*/
         case 'A':
-            readResponses(response, currentSize);
+            readResponses(response, responseMax, currentSize);
             break;
-        case 'b':
         case 'B':
             playMagic8(response, currentSize);
             break;
-        case 'c':
         case 'C':
-            printResponsesAndCategories(response, responseSize, currentSize);
+            printResponsesAndCategories(response, responseMax, currentSize);
             break;
-        case 'd':
         case 'D':
-            writeResponsesToFile(response, responseSize, currentSize);
+            writeResponsesToFile(response, currentSize);
             break;
-        case 'e':
         case 'E':;
-            deleteResponse(response, responseSize, currentSize);
+            deleteResponse(response, currentSize);
             break;
-        case 'f':
         case 'F':
             return false;
         default:
             unknownInput();
     }// switch
-    cout << endl;
+    std::cout << std::endl;
     return true;
 }// bool menu
